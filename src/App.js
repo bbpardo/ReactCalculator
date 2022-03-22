@@ -1,38 +1,63 @@
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
+import History from './components/history/History.jsx'
 
 function App() {
-  const [ firstNumber, setFirstNumber ] = useState(null);
-  const [ secondNumber, setSecondNumber ] = useState(null);
-  const [ result, setResult ] = useState(null);
+  const [ firstNumber, setFirstNumber ] = useState(0);
+  const [ secondNumber, setSecondNumber ] = useState(0);
+  const [ result, setResult ] = useState(0);
+  const [ resultsHistory, setResultsHistory ] = useState([]);
   const resultTemp = useRef(0)
-
   function changeFirstNumberHandler (event) {
-    setFirstNumber(event.target.value);
+    setFirstNumber(parseFloat(event.target.value));
   }
   function changeSecondNumberHandler (event) {
-    setSecondNumber(event.target.value);
+    setSecondNumber(parseFloat(event.target.value));
   }
   function changeResultSumarHandler () {
-    let temp = parseFloat(firstNumber) + parseFloat(secondNumber)
+    const temp ={
+      primerOperador: firstNumber,
+      segundoOperador: secondNumber,
+      operador:"+",
+      resultado: firstNumber + secondNumber
+    }
     setResult(temp);
+    setFirstNumber(temp.resultado);
   }
   function changeResultRestaHandler () {
-    let temp = parseFloat(firstNumber) - parseFloat(secondNumber)
+    const temp ={
+      primerOperador: firstNumber,
+      segundoOperador: secondNumber,
+      operador:"-",
+      resultado: firstNumber - secondNumber
+    }
     setResult(temp);
+    setFirstNumber(temp.resultado);
   }
   function changeResultMultiplicarHandler () {
-    let temp = parseFloat(firstNumber) * parseFloat(secondNumber)
+    const temp ={
+      primerOperador: firstNumber,
+      segundoOperador: secondNumber,
+      operador:"x",
+      resultado: firstNumber * secondNumber
+    }
     setResult(temp);
+    setFirstNumber(temp.resultado);
   }
   function changeResultDividirHandler () {
-    let temp = parseFloat(firstNumber) / parseFloat(secondNumber)
+    const temp ={
+      primerOperador: firstNumber,
+      segundoOperador: secondNumber,
+      operador:"/",
+      resultado: firstNumber / secondNumber
+    }
     setResult(temp);
+    setFirstNumber(temp.resultado);
   }
   function clearNumberHandler (event) {
-    setFirstNumber("");
-    setSecondNumber("");
-    setResult("");
+    setFirstNumber("0");
+    setSecondNumber("0");
+    setResult("0");
   }
   function resultMemory(){
     resultTemp.current = parseFloat(result);
@@ -41,15 +66,11 @@ function App() {
     setFirstNumber(resultTemp.current)
 
   }
-
   useEffect(
     ()=>{
-      console.log("firstNumber state:", firstNumber);
-      console.log("secondNumber states", secondNumber);
-      console.log("resultado", result);
-    }
+      setResultsHistory([...resultsHistory,result]);
+    },[result]
   )
-
   return (
     <>
       <h1>Calculadora</h1>
@@ -62,10 +83,10 @@ function App() {
       <button type="sumit" onClick= {clearNumberHandler}>C</button>
       <button type="sumit" onClick= {resultMemory}>M+</button>
       <button type="sumit" onClick= {restoreResult}>MR</button>
-      <input type="text" value={result}/>
-      <p>{result}</p>
+      <p>{result.resultado}</p>
+      <h2>Historial</h2>
+      <History results={resultsHistory}/>
     </>
-
   );
 }
 
