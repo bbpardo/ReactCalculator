@@ -60,7 +60,7 @@ function App() {
     setResult("0");
   }
   function resultMemory(){
-    resultTemp.current = parseFloat(result);
+    resultTemp.current = parseFloat(result.resultado);
   }
   function restoreResult(){
     setFirstNumber(resultTemp.current)
@@ -68,24 +68,30 @@ function App() {
   }
   useEffect(
     ()=>{
-      setResultsHistory([...resultsHistory,result]);
+      if(result.resultado!=null){
+        setResultsHistory([...resultsHistory,result]);
+      }
     },[result]
   )
   return (
     <>
-      <h1>Calculadora</h1>
-      <input type="text" value={firstNumber} onChange={changeFirstNumberHandler}/>
-      <input type="text" value={secondNumber} onChange={changeSecondNumberHandler}/>
-      <button type="sumit" onClick= {changeResultSumarHandler}>+</button>
-      <button type="sumit" onClick= {changeResultRestaHandler}>-</button>
-      <button type="sumit" onClick= {changeResultMultiplicarHandler}>x</button>
-      <button type="sumit" onClick= {changeResultDividirHandler}>%</button>
-      <button type="sumit" onClick= {clearNumberHandler}>C</button>
-      <button type="sumit" onClick= {resultMemory}>M+</button>
-      <button type="sumit" onClick= {restoreResult}>MR</button>
-      <p>{result.resultado}</p>
-      <h2>Historial</h2>
-      <History results={resultsHistory}/>
+      <h1 className='App'>Calculadora</h1>
+      <div className='wrapper'>
+        <input type="text" value={firstNumber} onChange={changeFirstNumberHandler}/>
+        <input type="text" value={secondNumber} onChange={changeSecondNumberHandler}/>
+        <div className='wrapper2'>
+          <button type="sumit" onClick= {changeResultSumarHandler}>+</button>
+          <button type="sumit" onClick= {changeResultRestaHandler}>-</button>
+          <button type="sumit" onClick= {changeResultMultiplicarHandler}>x</button>
+          <button type="sumit" onClick= {changeResultDividirHandler}>%</button>
+          <button type="sumit" onClick= {clearNumberHandler}>C</button>
+          <button type="sumit" onClick= {resultMemory}>M+</button>
+          <button type="sumit" onClick= {restoreResult}>MR</button>
+        </div>
+        <p>Resultado = {result.resultado}</p>
+        <h2>Historial</h2>
+        <History results={resultsHistory}/>
+      </div>
     </>
   );
 }

@@ -1,7 +1,7 @@
 
 function History ({results}){
     const liArray= results.map(
-        item => <li>{item.primerOperador} {item.operador} {item.segundoOperador} = {item.resultado}</li>
+        (item,idx) => <li key={idx}>{item.primerOperador} {item.operador} {item.segundoOperador} = {item.resultado}</li>
     )
     return (
         <> 
